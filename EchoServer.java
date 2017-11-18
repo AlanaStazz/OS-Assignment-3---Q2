@@ -9,35 +9,40 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
+    public static class HandleEcho implements Runnable{
+        BufferedInputStream inStream;
+        PrintWriter pout;
+        String msg;
+        int data;
+        Socket client;
 
-    public static void main(String args[]){
-            Boolean on = true;
-        try{
-
-            //Make new socket
-            ServerSocket sock = new ServerSocket(666);
-
-            //While listening...
-            while(on){
-                System.out.println("LOOPING");
-                //Listen for attempted connection
-                Socket client = sock.accept();
+        public HandleEcho(Socket client) {
+            try {
+                this.client = client;
 
                 //Create client input stream
-                BufferedInputStream inStream =  new BufferedInputStream(client.getInputStream());
+                this.inStream =  new BufferedInputStream(client.getInputStream());
 
                 //Create output stream
-                PrintWriter pout = new PrintWriter(client.getOutputStream(), true);
+                this.pout = new PrintWriter(client.getOutputStream(), true);
 
                 //Print server prompt
-                String msg = "\nServer: ";
+                this.msg = "\nServer: ";
+
                 System.out.println(msg);
 
+            } catch(IOException e){
+                System.out.println(e);
+            }
+        }
+
+        public void exe(){
+            try {
                 //Grab data from the input stream
-                int data = inStream.read();
+                data = inStream.read();
 
                 //While it's not a newline (i.e. not end of data stream)
-                while(data != 10){
+                while (data != 10) {
                     //Keep appending, reading next data, and printing
                     System.out.println(data + " " + (char) data);
                     msg += ((char) data);
@@ -47,8 +52,38 @@ public class EchoServer {
                 //Print the data to the output stream
                 pout.println(msg);
 
-                //End the session
+                //End the connection
                 client.close();
+            } catch(IOException e){
+                System.out.println(e);
+            }
+        }
+
+
+        public void run() {
+            exe();
+        }
+    }
+
+    public static void main(String args[]){
+        try{
+            Boolean on = true;
+            //Make new socket
+            ServerSocket sock = new ServerSocket(666);
+            //Create runnable object
+            HandleEcho serv;
+
+            //While listening...
+            while(on){
+                System.out.println("LOOPING");
+                //Listen for attempted connection
+                Socket client = sock.accept();
+
+                //Construct thread using socket and run
+                serv = new HandleEcho(client);
+                serv.run();
+
+
             }
         }
         catch (IOException ioe){

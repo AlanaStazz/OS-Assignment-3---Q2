@@ -30,7 +30,7 @@ public class EchoClient {
 
 
                 System.out.println("Enter a message: ");
-                msg = scan.next();
+                msg = scan.nextLine();
 
                 //Write the data to the output stream
                 pout.println(msg);
