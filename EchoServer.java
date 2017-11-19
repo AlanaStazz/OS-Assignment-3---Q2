@@ -77,10 +77,9 @@ public class EchoServer {
             while(on){
                 System.out.println("LOOPING");
                 //Listen for attempted connection
-                Socket client = sock.accept();
 
                 //Construct thread using socket and run
-                serv = new HandleEcho(client);
+                serv = new HandleEcho(sock.accept());
                 serv.run();
 
 
