@@ -80,7 +80,7 @@ public class EchoServer {
 
                 //Construct thread using socket and run
                 serv = new HandleEcho(sock.accept());
-                serv.run();
+                new Thread(serv).run();
 
 
             }
