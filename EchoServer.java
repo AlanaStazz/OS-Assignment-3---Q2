@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
+
     public static class HandleEcho implements Runnable{
         BufferedInputStream inStream;
         PrintWriter pout;
@@ -75,12 +76,12 @@ public class EchoServer {
 
             //While listening...
             while(on){
-                System.out.println("LOOPING");
+                System.out.println("\nLOOPING");
                 //Listen for attempted connection
 
                 //Construct thread using socket and run
                 serv = new HandleEcho(sock.accept());
-                new Thread(serv).run();
+                new Thread(serv).start();
 
 
             }
