@@ -14,13 +14,14 @@ public class EchoClient {
     public static void main(String args[]){
         String msg = "";
 
+        //Error Checking
         if(args.length < 1){
-            System.out.println("Error: Too Few Args");
-            System.out.println("Usage: EchoClient <ip> ");
+            System.err.println("Error: Too Few Args");
+            System.err.println("Usage: EchoClient <ip> ");
             System.exit(2);
         }else if(args.length > 1){
-            System.out.println("Error: Too Many Args");
-            System.out.println("Usage: EchoClient <ip> ");
+            System.err.println("Error: Too Many Args");
+            System.err.println("Usage: EchoClient <ip> ");
             System.exit(2);
         }
 
